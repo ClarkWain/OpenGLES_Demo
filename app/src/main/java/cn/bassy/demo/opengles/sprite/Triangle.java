@@ -94,7 +94,7 @@ public class Triangle {
         GLES20.glAttachShader(shaderProgram, fragmentShader);//attach fragmentShader to a program object
         ErrorChecker.check("glAttachFragmentShader");
 
-        GLES20.glLinkProgram(shaderProgram); //link a program object
+        GLES20.glLinkProgram(shaderProgram); //join our shaders together.
         ErrorChecker.check("glLinkProgram");
     }
 
