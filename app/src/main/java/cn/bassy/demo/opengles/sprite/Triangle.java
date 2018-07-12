@@ -27,13 +27,13 @@ public class Triangle {
 
     private float color[] = {0.0f, 0.6f, 1.0f, 1.0f};
 
-    private final String vertexShaderCode =
+    private static final String vertexShaderCode =
                     "attribute vec4 vPosition;\n" +
                     "void main() {" +
                     "   gl_Position = vPosition;\n" +
                     "}\n";
 
-    private final String fragmentShaderCode =
+    private static final String fragmentShaderCode =
                     "precision mediump float;\n" +
                     "uniform vec4 vColor;\n" +
                     "void main() {\n" +
@@ -67,15 +67,27 @@ public class Triangle {
         vertexBuffer.put(vertices);
         vertexBuffer.position(0);
 
+        //A vertex shader generates the final position of each vertex and is run once
+        //per vertex. Once the final positions are known, OpenGL will take the visible
+        //set of vertices and assemble them into points, lines, and triangles.
         int vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
         ErrorChecker.check("loadVertexShader ");
 
+        //A fragment shader generates the final color of each fragment of a point,
+        //line, or triangle and is run once per fragment. A fragment is a small,
+        //rectangular area of a single color, analogous to a pixel on a computer screen.
         int fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
         ErrorChecker.check("loadFragmentShader ");
 
         shaderProgram = GLES20.glCreateProgram(); //create a program object
         ErrorChecker.check("glCreateProgram");
 
+        //An OpenGL program is simply one vertex shader and one fragment shader
+        //linked together into a single object. Vertex shaders and fragment shaders
+        //always go together.
+        //Without a fragment shader, OpenGL wouldn’t know how
+        //to draw the fragments that make up each point, line, and triangle; and without
+        //a vertex shader, OpenGL wouldn’t know where to draw these fragments.
         GLES20.glAttachShader(shaderProgram, vertexShader); //attach vertexShader to a program object
         ErrorChecker.check("glAttachVertexShader");
 
