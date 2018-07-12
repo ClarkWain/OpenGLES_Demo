@@ -102,14 +102,19 @@ public class Triangle {
         GLES20.glUseProgram(shaderProgram); //install a program object as part of current rendering state
         ErrorChecker.check("glUseProgram");
 
+        //Each variable of shader has a location, and OpenGL works with these
+        //locations rather than with the name of the variable directly.
+        //So we need to retrieve vertex position and color position.
         int positionAttrib = GLES20.glGetAttribLocation(shaderProgram, "vPosition"); //get the location of an attribute variable, vPosition is defined in the vertexShaderCode
         ErrorChecker.check("glGetAttribLocation");
 
-        GLES20.glEnableVertexAttribArray(positionAttrib); //enable a generic vertex attribute array
-        ErrorChecker.check("glEnableVertexAttribArray");
-
+        //tell OpenGL that it can find the data for vPosition in the buffer vertexBuffer
         GLES20.glVertexAttribPointer(positionAttrib, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer); //define an array of generic vertex attribute data
         ErrorChecker.check("glVertexAttribPointer");
+
+        //enable the attribute
+        GLES20.glEnableVertexAttribArray(positionAttrib); //enable a generic vertex attribute array
+        ErrorChecker.check("glEnableVertexAttribArray");
 
         int colorUniform = GLES20.glGetUniformLocation(shaderProgram, "vColor"); //get the location of a uniform variable, vColor is defined in the fragmentShaderCode
         ErrorChecker.check("glGetUniformLocation");
