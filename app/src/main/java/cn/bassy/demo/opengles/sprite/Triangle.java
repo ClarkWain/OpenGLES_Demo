@@ -25,8 +25,6 @@ public class Triangle {
              0.5f, -0.5f, 0.0f
     };
 
-    private float color[] = {0.0f, 0.6f, 1.0f, 1.0f};
-
     private static final String vertexShaderCode =
                     "attribute vec4 vPosition;\n" +
                     "void main() {" +
@@ -119,9 +117,11 @@ public class Triangle {
         int colorUniform = GLES20.glGetUniformLocation(shaderProgram, "vColor"); //get the location of a uniform variable, vColor is defined in the fragmentShaderCode
         ErrorChecker.check("glGetUniformLocation");
 
-        GLES20.glUniform4fv(colorUniform, 1, color, 0); //specify the value of a uniform variable for the current program object
+        // glUniform4f or glUniform4fv can be used to load a uniform variable array of type vec4
+        GLES20.glUniform4f(colorUniform, 0.0f, 0.6f, 1.0f, 1.0f); //specify the value of a uniform variable for the current program object
         ErrorChecker.check("glUniform4fv");
 
+        //finally draw it to screen
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertices.length / 3);
         ErrorChecker.check("glDrawArrays");
     }
