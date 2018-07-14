@@ -7,6 +7,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import cn.bassy.demo.opengles.sprite.BlendTriangleFan;
 import cn.bassy.demo.opengles.sprite.FlashBackground;
+import cn.bassy.demo.opengles.sprite.Square;
 import cn.bassy.demo.opengles.sprite.Triangle;
 import cn.bassy.demo.opengles.sprite.TriangleFan;
 
@@ -21,6 +22,7 @@ class MainRender implements GLSurfaceView.Renderer {
     Triangle triangle;
     TriangleFan triangleFan;
     BlendTriangleFan colorfulTriangleFan;
+    Square square;
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -28,11 +30,12 @@ class MainRender implements GLSurfaceView.Renderer {
         triangle = new Triangle();
         triangleFan = new TriangleFan();
         colorfulTriangleFan = new BlendTriangleFan();
+        square = new Square();
     }
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
-
+        square.onSizeChanged(width, height);
     }
 
     @Override
@@ -40,6 +43,7 @@ class MainRender implements GLSurfaceView.Renderer {
         background.draw();
         //triangle.draw();
         //triangleFan.draw();
-        colorfulTriangleFan.draw();
+        //colorfulTriangleFan.draw();
+        square.draw();
     }
 }
