@@ -30,12 +30,12 @@ public class TriangleFan {
     private FloatBuffer vertexBuffer;
     private float vertices[] = {
             // x,   y,    z
-             0.0f,  0.0f, 0.0f,
-            -0.5f, -0.5f, 0.0f,
-             0.5f, -0.5f, 0.0f,
-             0.5f,  0.5f, 0.0f,
-            -0.5f,  0.5f, 0.0f,
-            -0.5f, -0.5f, 0.0f // the last one repeat
+             0.0f,  0.0f, 0.0f, //center position
+            -0.5f, -0.5f, 0.0f, //first  (0,0) (-0.5, -0.5) ( 0.5, -0.5)
+             0.5f, -0.5f, 0.0f, //second (0,0) ( 0.5, -0.5) ( 0.5,  0.5)
+             0.5f,  0.5f, 0.0f, //third  (0,0) ( 0.5,  0.5) (-0.5,  0.5)
+            -0.5f,  0.5f, 0.0f, //forth  (0,0) (-0.5,  0.5) (-0.5, -0.5)
+            -0.5f, -0.5f, 0.0f  //the repeat position
     };
 
     private static final String vertexShaderCode =
