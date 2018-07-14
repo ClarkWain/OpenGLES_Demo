@@ -20,6 +20,7 @@ public class Triangle {
 
     private FloatBuffer vertexBuffer;
     private float vertices[] = {
+            // x  ,   y,   z
              0.0f,  0.5f, 0.0f,
             -0.5f, -0.5f, 0.0f,
              0.5f, -0.5f, 0.0f
