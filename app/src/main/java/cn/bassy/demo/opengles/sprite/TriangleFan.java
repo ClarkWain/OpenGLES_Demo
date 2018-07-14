@@ -25,7 +25,7 @@ import cn.bassy.demo.opengles.util.ErrorChecker;
  */
 public class TriangleFan {
 
-    private static final String TAG = "Triangle";
+    private static final String TAG = "TriangleFan";
 
     private FloatBuffer vertexBuffer;
     private float vertices[] = {
