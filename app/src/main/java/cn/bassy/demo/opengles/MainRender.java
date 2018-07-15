@@ -10,6 +10,7 @@ import cn.bassy.demo.opengles.sprite.FlashBackground;
 import cn.bassy.demo.opengles.sprite.Square;
 import cn.bassy.demo.opengles.sprite.Triangle;
 import cn.bassy.demo.opengles.sprite.TriangleFan;
+import cn.bassy.demo.opengles.sprite.TriangleFan3D;
 
 /**
  * Created on 2018/7/12
@@ -23,6 +24,7 @@ class MainRender implements GLSurfaceView.Renderer {
     TriangleFan triangleFan;
     BlendTriangleFan colorfulTriangleFan;
     Square square;
+    TriangleFan3D triangleFan3D;
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -31,6 +33,7 @@ class MainRender implements GLSurfaceView.Renderer {
         triangleFan = new TriangleFan();
         colorfulTriangleFan = new BlendTriangleFan();
         square = new Square();
+        triangleFan3D = new TriangleFan3D();
     }
 
     @Override
@@ -44,6 +47,7 @@ class MainRender implements GLSurfaceView.Renderer {
         //triangle.draw();
         //triangleFan.draw();
         //colorfulTriangleFan.draw();
-        square.draw();
+        //square.draw();
+        triangleFan3D.draw();
     }
 }
