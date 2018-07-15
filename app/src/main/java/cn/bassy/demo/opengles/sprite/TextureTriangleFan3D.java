@@ -9,15 +9,15 @@ import java.nio.FloatBuffer;
 import cn.bassy.demo.opengles.util.ErrorChecker;
 
 /**
- * four triangle with blend color, but create a illusion of 3d, look like this:
+ * four triangle with blend color, but create a illusion of 3d with 2d texture.
  *
  * Created on 2018/7/15
  *
  * @author weitianpeng
  */
-public class TriangleFan3D {
+public class TextureTriangleFan3D {
 
-    private static final String TAG = "TriangleFan3D";
+    private static final String TAG = "TextureTriangleFan3D";
 
     private FloatBuffer vertexBuffer;
     private float vertices[] = {
@@ -79,7 +79,7 @@ public class TriangleFan3D {
         return shader;
     }
 
-    public TriangleFan3D() {
+    public TextureTriangleFan3D() {
         vertexBuffer = ByteBuffer.allocateDirect(vertices.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
         vertexBuffer.put(vertices);
         vertexBuffer.position(0);
