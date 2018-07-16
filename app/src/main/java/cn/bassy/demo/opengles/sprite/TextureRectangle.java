@@ -13,7 +13,7 @@ import cn.bassy.demo.opengles.util.ShaderHelper;
 import cn.bassy.demo.opengles.util.TextureHelper;
 
 /**
- * four triangle with blend color, but create a illusion of 3d with 2d texture.
+ * a rectangle with texture 2d texture.
  *
  * Created on 2018/7/15
  *
@@ -24,7 +24,7 @@ public class TextureRectangle extends ISprite {
     private static final String TAG = "TextureRectangle";
 
     private static final int BYTE_PER_FLOAT = 4;
-    private static final int VERTEX_COMPONENTS = 3; //X, Y, Z
+    private static final int VERTEX_COMPONENTS = 4; //X, Y, Z, W
     private static final int TEXTURE_COMPONENTS = 2; //S, T
 
     private FloatBuffer vertexBuffer;
@@ -93,7 +93,7 @@ public class TextureRectangle extends ISprite {
 
         GLES20.glLinkProgram(shaderProgram); //join our shaders together.
 
-        textureId = TextureHelper.loadTexture(context, R.drawable.texture);
+        textureId = TextureHelper.loadTexture(context, R.drawable.texture); //load image into texture.
     }
 
     public void onSizeChanged(int width, int height){
@@ -123,6 +123,20 @@ public class TextureRectangle extends ISprite {
         int textureAttrib = GLES20.glGetAttribLocation(shaderProgram, "a_TextureCoordinates"); //get the location of an attribute variable, vPosition is defined in the vertexShaderCode
         GLES20.glVertexAttribPointer(textureAttrib, TEXTURE_COMPONENTS, GLES20.GL_FLOAT, false, 0, textureBuffer); //define an array of generic vertex attribute data
         GLES20.glEnableVertexAttribArray(textureAttrib); //enable a generic vertex attribute array
+
+
+        //When we draw using textures in OpenGL, we don’t pass the texture directly in to the shader.
+        //Instead, we use a texture unit to hold the texture.
+        //We do this because a GPU can only draw so many textures at the same time. It uses these
+        // texture units to represent the active textures currently being drawn.
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE0); // Set the active texture unit to texture unit 0.
+
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId);// Bind the texture to this unit.
+
+        // Tell the texture uniform sampler to use this texture in the shader by
+        // telling it to read from texture unit 0.
+        int uTextureUnitLocation = GLES20.glGetUniformLocation(shaderProgram, "u_TextureUnit");
+        GLES20.glUniform1i(uTextureUnitLocation, 0);
 
 
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, vertices.length / VERTEX_COMPONENTS);
