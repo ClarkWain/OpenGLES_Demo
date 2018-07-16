@@ -3,9 +3,8 @@ package cn.bassy.demo.opengles;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ConfigurationInfo;
-import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -15,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (isSupportGLES20()) {
-            MainRender render = new MainRender();
+            MainRender render = new MainRender(getApplicationContext());
 
             MainGLSurfaceView glSurfaceView = new MainGLSurfaceView(this);
             glSurfaceView.setEGLContextClientVersion(2);

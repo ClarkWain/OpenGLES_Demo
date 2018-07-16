@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.opengl.GLES20;
 import android.opengl.GLUtils;
 import android.support.annotation.DrawableRes;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 public class TextureHelper {

@@ -1,23 +1,27 @@
 package cn.bassy.demo.opengles.sprite;
 
+import android.content.Context;
 import android.opengl.GLES20;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
-import cn.bassy.demo.opengles.util.ErrorChecker;
+import cn.bassy.demo.opengles.util.ShaderHelper;
 
 /**
- * four triangle with blend color, but create a illusion of 3d, look like this:
+ * four triangle with blend color, but create a illusion of 3d:
  *
  * Created on 2018/7/15
  *
  * @author weitianpeng
  */
-public class TriangleFan3D {
+public class TriangleFan3D extends ISprite{
 
     private static final String TAG = "TriangleFan3D";
+    private static final int BYTE_PER_FLOAT = 4;
+    private static final int VERTEX_COMPONENTS = 4; //X, Y, Z, W
+    private static final int COLOR_COMPONENTS = 3; //R, G, B
 
     private FloatBuffer vertexBuffer;
     private float vertices[] = {
@@ -42,54 +46,37 @@ public class TriangleFan3D {
     };
 
     private static final String vertexShaderCode =
-                    "attribute vec4 vPosition;\n" +
-                    "attribute vec4 aColor;\n" +
-                    "varying vec4 vColor;\n" +
+                    "attribute vec4 vPosition;" +
+                    "attribute vec4 aColor;" +
+                    "varying vec4 vColor;" +
                     "void main() {" +
-                    "   vColor = aColor;\n" +
-                    "   gl_Position = vPosition;\n" +
-                    "}\n";
+                    "   vColor = aColor;" +
+                    "   gl_Position = vPosition;" +
+                    "}";
 
     private static final String fragmentShaderCode =
-                    "precision mediump float;\n" +
-                    "varying vec4 vColor;\n" +
-                    "void main() {\n" +
-                    "  gl_FragColor = vColor;\n" +
-                    "}\n";
+                    "precision mediump float;" +
+                    "varying vec4 vColor;" +
+                    "void main() {" +
+                    "  gl_FragColor = vColor;" +
+                    "}";
 
     private int shaderProgram;
 
-    /**
-     * Create a Shader
-     *
-     * @param type       Must be either GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
-     * @param shaderCode GLSL code
-     * @return a non-zero value by which it can be referenced
-     */
-    private static int loadShader(int type, String shaderCode) {
-        int shader = GLES20.glCreateShader(type); //create a shader object
-        ErrorChecker.check("glCreateShader");
 
-        GLES20.glShaderSource(shader, shaderCode); //replace the source code in a shader object
-        ErrorChecker.check("glShaderSource");
+    public TriangleFan3D(Context context) {
+        super(context);
 
-        GLES20.glCompileShader(shader); //compile a shader object
-        ErrorChecker.check("glCompileShader");
-
-        return shader;
-    }
-
-    public TriangleFan3D() {
-        vertexBuffer = ByteBuffer.allocateDirect(vertices.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
+        vertexBuffer = ByteBuffer.allocateDirect(vertices.length * BYTE_PER_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
         vertexBuffer.put(vertices);
         vertexBuffer.position(0);
 
-        colorBuffer = ByteBuffer.allocateDirect(colors.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
+        colorBuffer = ByteBuffer.allocateDirect(colors.length * BYTE_PER_FLOAT).order(ByteOrder.nativeOrder()).asFloatBuffer();
         colorBuffer.put(colors);
         colorBuffer.position(0);
 
-        int vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
-        int fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
+        int vertexShader = ShaderHelper.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
+        int fragmentShader = ShaderHelper.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
 
         shaderProgram = GLES20.glCreateProgram(); //create a program object
 
@@ -99,18 +86,23 @@ public class TriangleFan3D {
         GLES20.glLinkProgram(shaderProgram); //join our shaders together.
     }
 
+    @Override
+    public void onSizeChanged(int width, int height) {
+
+    }
+
     public void draw() {
         GLES20.glUseProgram(shaderProgram); //install a program object as part of current rendering state
 
-        int positionAttrib = GLES20.glGetAttribLocation(shaderProgram, "vPosition"); //get the location of an attribute variable, vPosition is defined in the vertexShaderCode
-        GLES20.glVertexAttribPointer(positionAttrib, 4, GLES20.GL_FLOAT, false, 0, vertexBuffer); //define an array of generic vertex attribute data
-        GLES20.glEnableVertexAttribArray(positionAttrib); //enable a generic vertex attribute array
+        int positionAttr = GLES20.glGetAttribLocation(shaderProgram, "vPosition"); //get the location of an attribute variable, vPosition is defined in the vertexShaderCode
+        GLES20.glVertexAttribPointer(positionAttr, VERTEX_COMPONENTS, GLES20.GL_FLOAT, false, 0, vertexBuffer); //define an array of generic vertex attribute data
+        GLES20.glEnableVertexAttribArray(positionAttr); //enable a generic vertex attribute array
 
-        int colorPositionAttrib = GLES20.glGetAttribLocation(shaderProgram, "aColor");
-        GLES20.glVertexAttribPointer(colorPositionAttrib, 3, GLES20.GL_FLOAT, false, 0, colorBuffer); //define an array of generic vertex attribute data
-        GLES20.glEnableVertexAttribArray(colorPositionAttrib); //enable a generic vertex attribute array
+        int colorAttr = GLES20.glGetAttribLocation(shaderProgram, "aColor");
+        GLES20.glVertexAttribPointer(colorAttr, COLOR_COMPONENTS, GLES20.GL_FLOAT, false, 0, colorBuffer); //define an array of generic vertex attribute data
+        GLES20.glEnableVertexAttribArray(colorAttr); //enable a generic vertex attribute array
 
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, 6);
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLE_FAN, 0, vertices.length/ VERTEX_COMPONENTS);
     }
 
 }

@@ -1,16 +1,28 @@
 package cn.bassy.demo.opengles.sprite;
 
+import android.content.Context;
 import android.opengl.GLES20;
 
 /**
+ * A flashing-background
+ *
  * Created on 2018/7/12
  *
  * @author weitianpeng
  */
-public class FlashBackground {
+public class FlashBackground extends ISprite {
 
     private float grey = 0;
     private boolean isReverse = false;
+
+    public FlashBackground(Context context) {
+        super(context);
+    }
+
+    @Override
+    public void onSizeChanged(int width, int height) {
+
+    }
 
     public void draw() {
         if (!isReverse) {
